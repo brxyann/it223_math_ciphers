@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>IT 223: Specialized Ciphers &amp; Decoding Practice Exam (15 Questions)</title>
+<style>
+:root {
+  --primary: #003366;
+  --primary-dark: #001a35;
+  --primary-light: #eaf2fb;
+  --accent: #1d4ed8;
+  --gold: #d97706;
+  --gold-light: #fef3c7;
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --success-border: #86efac;
+  --error: #b91c1c;
+  --error-bg: #fee2e2;
+  --error-border: #fca5a5;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-900: #0f172a;
+  --radius: 10px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow: 0 4px 12px -1px rgba(0,0,0,0.12), 0 2px 4px -2px rgba(0,0,0,0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  background-color: #f1f5f9;
+  color: var(--gray-900);
+  line-height: 1.5;
+  padding-bottom: 100px;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 65%, #0f4c81 100%);
+  color: white;
+  padding: 26px 16px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.school-tag {
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #dbeafe;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.dashboard-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 16px;
+}
+
+.dashboard-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mode-and-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mode-switch {
+  display: inline-flex;
+  background: var(--gray-100);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-300);
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.mode-btn.exam-active {
+  background: #b91c1c;
+  color: white;
+}
+
+.stat-badge {
+  background: var(--gray-100);
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-badge strong {
+  color: var(--primary);
+}
+
+.stat-badge.score-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid #bfdbfe;
+}
+
+.progress-track {
+  width: 72px;
+  height: 7px;
+  background: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--success);
+  transition: width 0.3s ease;
+}
+
+.timer-box {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #9f1239;
+}
+
+.timer-box.show {
+  display: inline-flex;
+}
+
+.timer-display {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-width: 50px;
+  text-align: center;
+}
+
+.timer-btn {
+  background: white;
+  border: 1px solid #fda4af;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #9f1239;
+  cursor: pointer;
+}
+
+.timer-btn:hover {
+  background: #ffe4e6;
+}
+
+.timer-select {
+  border: 1px solid #fda4af;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  padding: 2px 4px;
+  background: white;
+  color: #9f1239;
+  font-weight: 700;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+button.btn-action {
+  background: white;
+  border: 1px solid var(--gray-300);
+  padding: 6px 11px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray-700);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+button.btn-action:hover {
+  background: var(--gray-100);
+}
+
+button.btn-cheatsheet {
+  background: var(--gold-light);
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+button.btn-cheatsheet:hover {
+  background: #fde68a;
+}
+
+button.btn-submit-exam {
+  background: #15803d;
+  border-color: #166534;
+  color: white;
+  display: none;
+}
+
+button.btn-submit-exam.show {
+  display: inline-flex;
+}
+
+button.btn-submit-exam:hover {
+  background: #166534;
+}
+
+button.btn-reset {
+  color: var(--error);
+  border-color: #fca5a5;
+}
+
+button.btn-reset:hover {
+  background: var(--error-bg);
+}
+
+.section-nav-wrapper {
+  max-width: 960px;
+  margin: 12px auto 0;
+  padding: 0 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.section-nav-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.section-nav {
+  display: flex;
+  gap: 7px;
+  width: max-content;
+}
+
+.nav-tab {
+  background: white;
+  border: 1px solid var(--gray-300);
+  padding: 7px 13px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  cursor: pointer;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition: all 0.2s;
+}
+
+.nav-tab:hover, .nav-tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+main {
+  max-width: 960px;
+  margin: 14px auto;
+  padding: 0 16px;
+}
+
+.exam-results-banner {
+  display: none;
+  background: white;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.exam-results-banner.show {
+  display: block;
+}
+
+.exam-results-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--gray-200);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+
+.exam-grade-big {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.topic-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.topic-stat-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+}
+
+.topic-stat-card strong {
+  display: block;
+  color: var(--gray-900);
+  margin-bottom: 3px;
+}
+
+.section-block {
+  margin-bottom: 26px;
+}
+
+.section-title-bar {
+  background: var(--primary-light);
+  border-left: 4px solid var(--primary);
+  padding: 12px 16px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: 14px;
+}
+
+.section-title-bar h2 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.section-title-bar p {
+  font-size: 0.82rem;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+
+.question-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  margin-bottom: 14px;
+  padding: 16px 16px 14px;
+  transition: transform 0.15s ease;
+}
+
+.question-header {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.48;
+}
+
+.q-badge {
+  background: var(--primary);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.q-topic-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.cipher-box {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-left: 4px solid #0284c7;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: var(--gray-700);
+}
+
+.cipher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-weight: 700;
+  color: #0369a1;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.cipher-pill {
+  background: white;
+  border: 1px solid #bae6fd;
+  color: #0c4a6e;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.cipher-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 6px;
+  background: white;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.cipher-table th, .cipher-table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+.cipher-table th {
+  background: #e0f2fe;
+  color: #0c4a6e;
+  font-weight: 700;
+}
+
+.mono {
+  font-family: "Courier New", Courier, monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-btn {
+  background: #ffffff;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 8px;
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 0.91rem;
+  color: var(--gray-900);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  line-height: 1.42;
+}
+
+.option-btn:hover {
+  background: var(--gray-50);
+  border-color: var(--accent);
+}
+
+.opt-key {
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray-100);
+  border-radius: 5px;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.option-btn.selected-exam {
+  background-color: #eff6ff !important;
+  border-color: var(--accent) !important;
+  color: #1e3a8a !important;
+  font-weight: 600;
+}
+
+.option-btn.selected-exam .opt-key {
+  background: var(--accent);
+  color: white;
+}
+
+.option-btn.correct {
+  background-color: var(--success-bg) !important;
+  border-color: var(--success) !important;
+  color: #14532d !important;
+  font-weight: 600;
+}
+
+.option-btn.correct .opt-key {
+  background: var(--success);
+  color: white;
+}
+
+.option-btn.incorrect {
+  background-color: var(--error-bg) !important;
+  border-color: var(--error) !important;
+  color: #7f1d1d !important;
+  animation: shake 0.25s;
+}
+
+.option-btn.incorrect .opt-key {
+  background: var(--error);
+  color: white;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.feedback-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.87rem;
+  display: none;
+  line-height: 1.48;
+}
+
+.feedback-box.show {
+  display: block;
+}
+
+.feedback-box.correct-msg {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #14532d;
+}
+
+.feedback-box.incorrect-msg {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: #7f1d1d;
+}
+
+.feedback-header {
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 12px;
+  max-width: 880px;
+  width: 100%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--primary);
+  color: white;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cs-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.cs-card h4 {
+  color: var(--primary);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.cs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0 16px;
+  font-size: 0.82rem;
+}
+
+.cs-table th, .cs-table td {
+  border: 1px solid var(--gray-300);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.cs-table th {
+  background: var(--primary);
+  color: white;
+}
+
+footer {
+  text-align: center;
+  color: var(--gray-600);
+  font-size: 0.8rem;
+  padding: 24px 16px;
+  margin-top: 30px;
+}
+
+@media (max-width: 720px) {
+  h1 { font-size: 1.3rem; }
+  .dashboard-inner { flex-direction: column; align-items: stretch; }
+  .mode-and-stats { justify-content: space-between; }
+  .dashboard-actions { justify-content: flex-end; }
+  .question-card { padding: 14px 12px 12px; }
+  .option-btn { padding: 10px 12px; font-size: 0.87rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="school-tag">George Mason University &bull; IT 223 Information Security Fundamentals</div>
+    <h1>Specialized Ciphers &amp; Decoding Practice Exam (15 Questions)</h1>
+    <div class="subtitle">Hands-On Encoding, Decoding &amp; Cipher Mechanics from Modules 5 &amp; 6 (Caesar, S-Box Table Lookup, XOR / Vernam Pad, Swaps, Circular Shifts, Arbitrary Transpositions, Symmetric Ciphers &amp; RSA Math)</div>
+  </div>
+</header>
+
+<div class="dashboard-container">
+  <div class="dashboard-inner">
+    <div class="mode-and-stats">
+      <div class="mode-switch">
+        <button type="button" class="mode-btn active" id="mode-practice-btn" onclick="setMode('practice')">&#x270D; Practice Mode</button>
+        <button type="button" class="mode-btn" id="mode-exam-btn" onclick="setMode('exam')">&#x23F1; Timed Quiz (25m)</button>
+      </div>
+
+      <div class="timer-box" id="timer-box">
+        <span>&#x23F0;</span>
+        <span class="timer-display" id="timer-display">25:00</span>
+        <button type="button" class="timer-btn" id="timer-toggle-btn" onclick="toggleTimer()">Pause</button>
+        <select class="timer-select" id="timer-duration-select" onchange="changeTimerDuration(this.value)" title="Select Duration">
+          <option value="15">15m</option>
+          <option value="25" selected>25m</option>
+          <option value="45">45m</option>
+        </select>
+      </div>
+
+      <div class="stat-badge score-badge" id="score-badge-wrap">
+        Score: <strong id="score-display">0 / 15</strong> (<span id="percent-display">0%</span>)
+      </div>
+      <div class="stat-badge">
+        Answered: <strong id="answered-display">0 / 15</strong>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-actions">
+      <button type="button" class="btn-action btn-submit-exam" id="submit-exam-btn" onclick="submitExam()">&#x2714; Submit &amp; Grade Quiz</button>
+      <button type="button" class="btn-action btn-cheatsheet" onclick="toggleCheatSheet(true)">&#x26A1; Cipher Decoding Cheat Sheet</button>
+      <button type="button" class="btn-action" id="study-mode-btn" onclick="toggleStudyMode()">&#x1F4D6; Study Mode</button>
+      <button type="button" class="btn-action btn-reset" onclick="resetExam()">&#x21bb; Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-nav-wrapper">
+  <nav class="section-nav">
+    <button type="button" class="nav-tab active" onclick="filterSection('all', this)">All (15 Qs)</button>
+    <button type="button" class="nav-tab" onclick="filterSection('sub', this)">I: Substitution &amp; XOR Decoding (Q1–6)</button>
+    <button type="button" class="nav-tab" onclick="filterSection('trans', this)">II: Transposition &amp; Product Ciphers (Q7–10)</button>
+    <button type="button" class="nav-tab" onclick="filterSection('modern', this)">III: Modern Ciphers &amp; RSA Math (Q11–15)</button>
+  </nav>
+</div>
+
+<main>
+  <div class="exam-results-banner" id="exam-results-banner"></div>
+  <div id="quiz-container"></div>
+</main>
+
+<!-- Cheat Sheet Modal -->
+<div class="modal-overlay" id="cheatsheet-modal" onclick="if(event.target===this)toggleCheatSheet(false)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>&#x26A1; IT 223 Ciphers &amp; Decoding Quick Reference Cheat Sheet</h3>
+      <button type="button" class="modal-close" onclick="toggleCheatSheet(false)">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="cs-grid">
+        <div class="cs-card">
+          <h4>1. Substitution Operations</h4>
+          <p>&bull; <strong>Fixed Replacement (+1):</strong> Replace each letter with the next (Z &rarr; A). Inverse: previous letter (A &rarr; Z).<br><em>Slide Ex:</em> <span class="mono">HELLO</span> &rarr; <span class="mono">IFMMP</span></p>
+          <p>&bull; <strong>Caesar Cipher (Variable, k = 3):</strong> Shift forward 3 letters. Inverse: shift back 3 letters.<br><em>Slide Ex:</em> <span class="mono">HELLO</span> &rarr; <span class="mono">KHOOR</span></p>
+          <p>&bull; <strong>4-Bit Table Lookup:</strong> <strong>Outer 2 bits</strong> = Column; <strong>Inner 2 bits</strong> = Row.</p>
+        </div>
+        <div class="cs-card">
+          <h4>2. XOR &amp; Vernam Cipher (One-Time Pad)</h4>
+          <p>&bull; <strong>XOR Rule:</strong> Same bits = <span class="mono">0</span> (<span class="mono">0&oplus;0=0</span>, <span class="mono">1&oplus;1=0</span>); Different bits = <span class="mono">1</span> (<span class="mono">0&oplus;1=1</span>, <span class="mono">1&oplus;0=1</span>).</p>
+          <p>&bull; <strong>Self-Inverse:</strong> <span class="mono">Plaintext &oplus; Key = Ciphertext</span> and <span class="mono">Ciphertext &oplus; Key = Plaintext</span>.</p>
+          <p>&bull; <strong>One-Time Pad Rules:</strong> Truly random values, used ONLY ONCE, pad as long as message, securely distributed &amp; guarded.</p>
+        </div>
+        <div class="cs-card">
+          <h4>3. Transposition Operations</h4>
+          <p>&bull; <strong>Spartan Scytale:</strong> Ancient physical transposition cylinder.</p>
+          <p>&bull; <strong>Swap:</strong> Split even block into 2 equal halves &amp; swap (<span class="mono">ABCD &rarr; CDAB</span>, <span class="mono">01010011 &rarr; 00110101</span>). Inverse = Swap again.</p>
+          <p>&bull; <strong>Rotation (Circular Shift):</strong> Shift right/left wrapping around (<span class="mono">ABCD &rarr; DABC</span> right 1; <span class="mono">01010011 &rarr; 10011010</span> left 3). Inverse = Rotate opposite way.</p>
+          <p>&bull; <strong>Arbitrary Transposition:</strong> Permute by index rule (e.g., <span class="mono">4132</span> turns <span class="mono">ABCD &rarr; DACB</span>).</p>
+        </div>
+      </div>
+
+      <h4>4. Modern Symmetric Block &amp; Stream Ciphers (Module 6 Slides)</h4>
+      <table class="cs-table">
+        <thead>
+          <tr>
+            <th>Cipher</th>
+            <th>Type / Block Size</th>
+            <th>Key Size &amp; Rounds</th>
+            <th>Key Exam Facts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Vernam (OTP)</strong></td><td>Bitwise XOR</td><td>Equal to message length</td><td>Basis for modern crypto; unbreakable if pad is random, used once, &amp; secret.</td></tr>
+          <tr><td><strong>RC4</strong></td><td>Stream Cipher</td><td>40 bits or more (variable)</td><td>Very weak at 40 bits; low processing &amp; RAM requirements.</td></tr>
+          <tr><td><strong>DES</strong></td><td>Block (64-bit)</td><td>56-bit effective (64 w/ 8-bit parity), 16 rounds</td><td>IBM Lucifer; cracked in 56 hours in 1998 by EFF's "Deep Crack".</td></tr>
+          <tr><td><strong>3DES</strong></td><td>Block (64-bit)</td><td>112 or 168 bits (3 iterations of DES)</td><td>Recommended standard in 1999; high processing requirements; deprecated.</td></tr>
+          <tr><td><strong>IDEA</strong></td><td>Block (64-bit)</td><td>128-bit key (four 16-bit subkeys, 8 rounds)</td><td>Launched 1990; uses multiplication, addition, &amp; XOR; used in <strong>PGP</strong>.</td></tr>
+          <tr><td><strong>Blowfish / Twofish</strong></td><td>Block (64-bit / 128-bit)</td><td>Blowfish: 32–448 (128 default); Twofish: 128–256</td><td>Created by Bruce Schneier (open/unpatented); Twofish was AES finalist.</td></tr>
+          <tr><td><strong>RC5 / RC6</strong></td><td>Block (32/64/128-bit)</td><td>RC5: 0–2040 bits; RC6: 128, 192, or 256 bits</td><td>Developed by RSA Labs; RC6 (128-bit block) was an AES finalist.</td></tr>
+          <tr><td><strong>AES (Rijndael)</strong></td><td>Block (128-bit)</td><td>128, 192, or 256 bits</td><td>Approved by NIST in 2000; today's gold standard; low CPU/RAM overhead.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 IT 223 Information Security Fundamentals &bull; Specialized Ciphers &amp; Decoding Practice Exam (15 Questions)</p>
+</footer>
+
+<script>
+const sectionMeta = [
+  { id: "sub", title: "Part I: Substitution Ciphers, S-Box Table Lookup & Bitwise XOR Decoding (Q1–6)", desc: "Questions 1–6 • Fixed replacement (+1), Caesar cipher (k = 3), 4-bit S-box row/column lookup, bitwise XOR decoding, and the Vernam Cipher (One-Time Pad)." },
+  { id: "trans", title: "Part II: Transposition Ciphers & Product Ciphers (Q7–10)", desc: "Questions 7–10 • Spartan Scytale, block swaps, circular shifts (rotations), arbitrary index transpositions (4132 & 75182346), and multi-round product ciphers." },
+  { id: "modern", title: "Part III: Stream vs. Block Ciphers, Symmetric Standards & RSA Math (Q11–15)", desc: "Questions 11–15 • Stream vs. block modes, DES (56-bit / Deep Crack), IDEA, Blowfish/Twofish, RC4/RC5/RC6, AES (Rijndael), and step-by-step RSA modular math." }
+];
+
+const examBank = [
+  // ================= PART I: SUBSTITUTION & XOR DECODING (Q1 - Q6) =================
+  {
+    num: 1, sec: "sub", topic: "Module 5 • Fixed vs. Variable Substitution (Caesar Cipher)",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>Alphabet Reference (A–Z)</span><span class="cipher-pill">Caesar Shift k = 3</span></div><div style="font-family:monospace; letter-spacing:2px; text-align:center; font-weight:700;">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div></div>`,
+    q: "In Module 5, fixed replacement replaces each letter with the next letter in the alphabet (HELLO → IFMMP), whereas the variable Caesar cipher replaces each letter with the letter k = 3 places after it (HELLO → KHOOR).<br><br>Using the Caesar cipher with k = 3: (1) What is the ciphertext for the plaintext word DATA, and (2) what plaintext word is recovered when you DECRYPT the Caesar ciphertext WUXVW?",
+    options: [
+      { k: "A", t: "(1) DATA → GDWD; (2) WUXVW → TRUST" },
+      { k: "B", t: "(1) DATA → EBUB; (2) WUXVW → VTWUV" },
+      { k: "C", t: "(1) DATA → AXQX; (2) WUXVW → ZXYXZ" },
+      { k: "D", t: "(1) DATA → GDWD; (2) WUXVW → WUXVW" }
+    ],
+    answer: "A",
+    explanation: "To encrypt DATA with k = 3 (shift forward 3): D→G, A→D, T→W, A→D = GDWD. To decrypt WUXVW with k = 3 (inverse operation: shift backward 3 places): W→T, U→R, X→U, V→S, W→T = TRUST."
+  },
+  {
+    num: 2, sec: "sub", topic: "Module 5 • 4-Bit Substitution Table Lookup (Encoding)",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>4-Bit Substitution Lookup Table (Module 5 Slide)</span><span class="cipher-pill">Outer 2 bits = Column | Inner 2 bits = Row</span></div><table class="cipher-table"><thead><tr><th>Row / Col</th><th>0--0 (Col 00)</th><th>0--1 (Col 01)</th><th>1--0 (Col 10)</th><th>1--1 (Col 11)</th></tr></thead><tbody><tr><td><strong>-00- (Row 00)</strong></td><td>1100</td><td>1000</td><td>0001</td><td>0111</td></tr><tr><td><strong>-01- (Row 01)</strong></td><td>0010</td><td>0101</td><td>1110</td><td>1011</td></tr><tr><td><strong>-10- (Row 10)</strong></td><td>1001</td><td>0000</td><td>1010</td><td>1111</td></tr><tr><td><strong>-11- (Row 11)</strong></td><td>0100</td><td>1101</td><td>0110</td><td>0011</td></tr></tbody></table></div>`,
+    q: "In the Module 5 substitution table above, a 4-bit input value is substituted by using its OUTER 2 bits (1st and 4th bits) to identify the column and its INNER 2 bits (2nd and 3rd bits) to identify the row (for example, 0000 is replaced by 1100).<br><br>What 4-bit output value replaces the input value 1010?",
+    options: [
+      { k: "A", t: "1010" },
+      { k: "B", t: "1110" },
+      { k: "C", t: "1001" },
+      { k: "D", t: "0101" }
+    ],
+    answer: "B",
+    explanation: "For input 1010: the outer 2 bits (1st bit '1' and 4th bit '0') are 1--0 (Column 10). The inner 2 bits (2nd bit '0' and 3rd bit '1') are -01- (Row 01). Looking at Row -01- and Column 1--0 in the table gives 1110."
+  },
+  {
+    num: 3, sec: "sub", topic: "Module 5 • 4-Bit Substitution Table Inverse Lookup (Decoding)",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>4-Bit Substitution Lookup Table (Inverse Lookup)</span><span class="cipher-pill">Outer 2 bits = Column | Inner 2 bits = Row</span></div><table class="cipher-table"><thead><tr><th>Row / Col</th><th>0--0 (Col 00)</th><th>0--1 (Col 01)</th><th>1--0 (Col 10)</th><th>1--1 (Col 11)</th></tr></thead><tbody><tr><td><strong>-00- (Row 00)</strong></td><td>1100</td><td>1000</td><td>0001</td><td>0111</td></tr><tr><td><strong>-01- (Row 01)</strong></td><td>0010</td><td>0101</td><td>1110</td><td>1011</td></tr><tr><td><strong>-10- (Row 10)</strong></td><td>1001</td><td>0000</td><td>1010</td><td>1111</td></tr><tr><td><strong>-11- (Row 11)</strong></td><td>0100</td><td>1101</td><td>0110</td><td>0011</td></tr></tbody></table></div>`,
+    q: "Using the same 4-bit substitution table above, suppose you intercept the 4-bit ciphertext value 1101. By finding 1101 in the table and reassembling its outer 2 bits (column) and inner 2 bits (row), what was the original 4-bit plaintext input?",
+    options: [
+      { k: "A", t: "0111" },
+      { k: "B", t: "1101" },
+      { k: "C", t: "0110" },
+      { k: "D", t: "1100" }
+    ],
+    answer: "A",
+    explanation: "Locate 1101 in the table: it sits in Row -11- (inner 2 bits = 11) and Column 0--1 (outer 2 bits = 0 and 1). Putting the outer bits (0 _ _ 1) around the inner bits (_ 1 1 _) gives the original 4-bit input: 0111."
+  },
+  {
+    num: 4, sec: "sub", topic: "Module 5 • Bitwise XOR Lecture Slide Problem",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>Module 5 Slide: Bitwise XOR Operation</span><span class="cipher-pill">0&oplus;0=0 | 1&oplus;1=0 | 0&oplus;1=1 | 1&oplus;0=1</span></div><div style="font-family:monospace; font-size:0.95rem;">Encryption: <strong>01011100</strong> xor <strong>00011010</strong> = <strong>01000110</strong><br>Decryption: <strong>01000110</strong> xor <strong>00011010</strong> = <strong>????????</strong></div></div>`,
+    q: "Solve the two XOR problems below:<br>(1) In the exact Module 5 slide example shown above, what is 01000110 xor 00011010?<br>(2) If a plaintext byte is 11010110 and the key byte is 10110011, what is the resulting ciphertext byte (11010110 xor 10110011)?",
+    options: [
+      { k: "A", t: "(1) 01011100; (2) 01100101" },
+      { k: "B", t: "(1) 00011010; (2) 10010010" },
+      { k: "C", t: "(1) 01011100; (2) 10011010" },
+      { k: "D", t: "(1) 10100011; (2) 01100101" }
+    ],
+    answer: "A",
+    explanation: "(1) Because bitwise XOR is its own inverse, XORing the result (01000110) with the second value (00011010) immediately recovers the original first value: 01011100. (2) Comparing 11010110 and 10110011 bit-by-bit (same = 0, different = 1): 1⊕1=0, 1⊕0=1, 0⊕1=1, 1⊕1=0, 0⊕0=0, 1⊕0=1, 1⊕1=0, 0⊕1=1 → 01100101."
+  },
+  {
+    num: 5, sec: "sub", topic: "Module 6 • Vernam Cipher (One-Time Pad) Rules",
+    q: "The Vernam Cipher (also known as the One-Time Pad) combines plaintext with a key stream via the Exclusive OR (XOR) function. According to the Module 6 slides, which of the following is NOT one of the mandatory requirements for a true One-Time Pad?",
+    options: [
+      { k: "A", t: "The pad must be made up of truly random values and used only one time." },
+      { k: "B", t: "The pad must be as long as the plaintext message." },
+      { k: "C", t: "The pad must be securely distributed to its destination and secured at both the sender's and receiver's sites." },
+      { k: "D", t: "The pad must shift the alphabet by a fixed number of characters and be reused across multiple sessions to save memory." }
+    ],
+    answer: "D",
+    explanation: "From the Module 6 Vernam Cipher slide: It does NOT shift the alphabet. Instead, it uses XOR, and the PAD must be (1) made up of random values, (2) used only one time, (3) securely distributed, (4) secured at both sites, and (5) as long as the message."
+  },
+  {
+    num: 6, sec: "sub", topic: "Module 5 • Cryptanalysis of Simple Substitution Ciphers",
+    q: "Why are monoalphabetic substitution ciphers (such as the Caesar cipher or fixed replacement) easily broken by statistical linguistic frequency analysis?",
+    options: [
+      { k: "A", t: "Because they use 256-bit keys that leak electromagnetic radiation." },
+      { k: "B", t: "Because substituting the same ciphertext letter for a given plaintext letter preserves the underlying language's letter frequency patterns (for example, 'E' appears ~13% of the time in English, 'T' ~9%, 'A' ~8%)." },
+      { k: "C", t: "Because they rearrange the order of the letters without changing the letters themselves." },
+      { k: "D", t: "Because they rely on prime number factoring." }
+    ],
+    answer: "B",
+    explanation: "In a simple substitution cipher, every occurrence of 'E' in plaintext becomes the same ciphertext letter, preserving English frequency distribution (~12.7% for 'E', ~9.1% for 'T'). A cryptanalyst simply counts letter frequencies in the ciphertext to deduce the key."
+  },
+
+  // ================= PART II: TRANSPOSITION & PRODUCT CIPHERS (Q7 - Q10) =================
+  {
+    num: 7, sec: "trans", topic: "Module 5 • Transposition Swap & Circular Shift (Rotation)",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>Module 5 Slide Examples: Swap &amp; Rotation</span></div><div>• <strong>Swap (2 equal halves):</strong> <span class="mono">ABCD &rarr; CDAB</span> &nbsp;|&nbsp; <span class="mono">01010011 &rarr; 00110101</span><br>• <strong>Rotation (Circular Shift):</strong> <span class="mono">ABCD &rarr; DABC</span> (right 1) &nbsp;|&nbsp; <span class="mono">01010011 &rarr; 10011010</span> (left 3)</div></div>`,
+    q: "Apply the Swap and Rotation (Circular Shift) transposition rules from Module 5 to the 8-bit input block 11001010:<br>(1) What is the output after a SWAP operation?<br>(2) What is the output after a CIRCULAR SHIFT (rotation) of 2 places to the LEFT, and what is the inverse operation needed to decrypt that rotation?",
+    options: [
+      { k: "A", t: "(1) Swap: 10101100; (2) Left 2 Rotation: 00101011 (Inverse: rotate 2 places to the right)" },
+      { k: "B", t: "(1) Swap: 01010011; (2) Left 2 Rotation: 10110010 (Inverse: swap halves)" },
+      { k: "C", t: "(1) Swap: 10101100; (2) Left 2 Rotation: 10110010 (Inverse: rotate 2 places to the left)" },
+      { k: "D", t: "(1) Swap: 00110101; (2) Left 2 Rotation: 00101011 (Inverse: XOR with 11111111)" }
+    ],
+    answer: "A",
+    explanation: "For 11001010: (1) Splitting into two 4-bit halves (1100 and 1010) and swapping gives 10101100. (2) Rotating 11001010 two places to the left moves the first two bits ('11') to the right end, producing 00101011. The inverse of rotating 2 places left is rotating 2 places right."
+  },
+  {
+    num: 8, sec: "trans", topic: "Module 5 • Arbitrary Transposition Encoding",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>Module 5 Slide: Arbitrary Transposition</span><span class="cipher-pill">Index Positions: 1 2 3 4 5 6 7 8</span></div><div>Slide Example 1: Output sequence <strong>4132</strong> turns <span class="mono">ABCD &rarr; DACB</span><br>Slide Example 2: Output sequence <strong>75182346</strong> turns <span class="mono">01010011 &rarr; 10011010</span></div></div>`,
+    q: "In an arbitrary transposition, the output sequence specifies which input position (1, 2, 3, 4...) is placed into each slot.<br><br>(1) Using the output sequence 4132, encrypt the 4-letter block WXYZ.<br>(2) Using the output sequence 3142, encrypt the 4-letter block LOCK.",
+    options: [
+      { k: "A", t: "(1) WXYZ → ZWYX; (2) LOCK → CLKO" },
+      { k: "B", t: "(1) WXYZ → ZXYW; (2) LOCK → KLOC" },
+      { k: "C", t: "(1) WXYZ → YXZW; (2) LOCK → OCLK" },
+      { k: "D", t: "(1) WXYZ → ZWYX; (2) LOCK → OLKC" }
+    ],
+    answer: "A",
+    explanation: "(1) For W(1) X(2) Y(3) Z(4) with sequence 4-1-3-2: pos 4 is Z, pos 1 is W, pos 3 is Y, pos 2 is X → ZWYX. (2) For L(1) O(2) C(3) K(4) with sequence 3-1-4-2: pos 3 is C, pos 1 is L, pos 4 is K, pos 2 is O → CLKO."
+  },
+  {
+    num: 9, sec: "trans", topic: "Module 5 • Arbitrary Transposition Decoding & Spartan Scytale",
+    q: "(1) Suppose a 4-letter plaintext word was encrypted using the arbitrary transposition output sequence 4132, producing the ciphertext word RBAE. What was the original 4-letter plaintext word?<br>(2) Which ancient military device was used by the Spartans as a physical transposition cipher?",
+    options: [
+      { k: "A", t: "(1) BEAR; (2) Scytale" },
+      { k: "B", t: "(1) BARE; (2) Scytale" },
+      { k: "C", t: "(1) READ; (2) Khnumhotep II Hieroglyphs" },
+      { k: "D", t: "(1) EARB; (2) Enigma" }
+    ],
+    answer: "A",
+    explanation: "(1) Under output sequence 4-1-3-2, the ciphertext R B A E contains: 1st letter = pos 4 (R), 2nd letter = pos 1 (B), 3rd letter = pos 3 (A), 4th letter = pos 2 (E). Reassembling positions 1-2-3-4 gives B(1) E(2) A(3) R(4) = BEAR! (2) The Spartans used the Scytale (a wooden rod wrapped with a leather strip) for transposition."
+  },
+  {
+    num: 10, sec: "trans", topic: "Module 5 • Product Ciphers & Rounds",
+    q: "Suppose a 2-step Product Cipher encrypts a 4-letter block by FIRST applying a Caesar substitution shift of k = 1 (replace each letter with the next letter in the alphabet) and SECOND applying a Swap transposition (swapping the two 2-letter halves).<br><br>What is the final ciphertext for the plaintext word CODE, and how must the recipient decrypt it?",
+    options: [
+      { k: "A", t: "Ciphertext: EFDPE; Decrypt by applying k = +1 then swapping." },
+      { k: "B", t: "Ciphertext: EFDP; Decrypt by applying the inverse operations in the REVERSE sequence (first Swap the halves back, then shift each letter back by -1)." },
+      { k: "C", t: "Ciphertext: DPEF; Decrypt by shifting back by -1 only." },
+      { k: "D", t: "Ciphertext: DECO; Product ciphers cannot be decrypted." }
+    ],
+    answer: "B",
+    explanation: "Step 1 (Substitution +1): C→D, O→P, D→E, E→F = DPEF. Step 2 (Swap halves DP and EF): EFDP. In symmetric product ciphers, decryption uses the inverse operations in the REVERSE sequence (swap EFDP back to DPEF, then shift -1 back to CODE)."
+  },
+
+  // ================= PART III: MODERN CIPHERS & RSA MATH (Q11 - Q15) =================
+  {
+    num: 11, sec: "modern", topic: "Module 6 • Stream Ciphers vs. Block Ciphers",
+    q: "According to the Module 6 slides comparing Stream Ciphers and Block Ciphers, which of the following statements is TRUE?",
+    options: [
+      { k: "A", t: "Stream ciphers encrypt each bit independently in a stream and are fast when plaintext is short, whereas block ciphers divide plaintext into fixed blocks (e.g., 8–16 bytes / 64–128 bits), reset after each block, and are considered more secure because the output is more random." },
+      { k: "B", t: "AES and DES are stream ciphers, whereas RC4 is a block cipher." },
+      { k: "C", t: "Stream ciphers encrypt 128-bit blocks at a time and cannot be attacked." },
+      { k: "D", t: "Block ciphers cannot be implemented at the software level." }
+    ],
+    answer: "A",
+    explanation: "Stream ciphers (like RC4) encrypt bit-by-bit/byte-by-byte and are fast for short plaintext, but more prone to attack because the stream engine does not vary. Block ciphers (like DES and AES) encrypt 64-bit or 128-bit blocks independently, can be easily implemented in software, and produce more random/secure output."
+  },
+  {
+    num: 12, sec: "modern", topic: "Module 6 • DES vs. 3DES (Deep Crack & Effective Key Size)",
+    q: "The Data Encryption Standard (DES), designed by IBM based on the Lucifer cipher, operates on 64-bit blocks using 16 rounds. Why is its effective key length only 56 bits instead of 64 bits, how was it broken in 1998, and how did 3DES replace it?",
+    options: [
+      { k: "A", t: "8 bits are used for parity and ignored (leaving 56 key bits); it was cracked in 56 hours in 1998 by the EFF's 'Deep Crack' supercomputer; 3DES replaced it in 1999 by performing three iterations of DES encryption (112- or 168-bit keys)." },
+      { k: "B", t: "8 bits are reserved for TCP headers; it was cracked by the NSA; 3DES uses 512-bit blocks." },
+      { k: "C", t: "DES uses a 128-bit key and has never been cracked." },
+      { k: "D", t: "3DES is a stream cipher with low processing requirements." }
+    ],
+    answer: "A",
+    explanation: "DES has a 64-bit block size, but 8 bits of its 64-bit key are parity bits, leaving an effective key length of 56 bits. In 1998, the Electronic Frontier Foundation (EFF) cracked DES in 56 hours using 'Deep Crack'. 3DES applies DES three times with two or three keys (112 or 168 bits)."
+  },
+  {
+    num: 13, sec: "modern", topic: "Module 6 • IDEA, Blowfish, Twofish, RC5 & RC6",
+    q: "Match the symmetric block ciphers from Module 6 to their defining characteristics:<br>(1) Operates on 64-bit blocks (8 rounds, 128-bit key split into four 16-bit subkeys) using multiplication, addition, and XOR; forms the basis of Pretty Good Privacy (PGP).<br>(2) Unpatented, freely available ciphers created by Bruce Schneier (one encrypts 64-bit blocks with 32–448 bit keys; the other is a 128-bit block AES finalist).<br>(3) Developed by RSA Labs; the latter is an AES finalist encrypting 128-bit blocks with 128, 192, or 256-bit keys.",
+    options: [
+      { k: "A", t: "(1) IDEA; (2) Blowfish & Twofish; (3) RC5 & RC6" },
+      { k: "B", t: "(1) AES; (2) DES & 3DES; (3) Diffie-Hellman" },
+      { k: "C", t: "(1) RC4; (2) IDEA; (3) Blowfish" },
+      { k: "D", t: "(1) Twofish; (2) RC6; (3) IDEA" }
+    ],
+    answer: "A",
+    explanation: "(1) IDEA (International Data Encryption Algorithm, 1990) uses 64-bit blocks, a 128-bit key, and is used in PGP. (2) Bruce Schneier created Blowfish (64-bit blocks, 32–448 bit keys) and Twofish (128-bit blocks, AES finalist). (3) RSA Labs developed RC5 and RC6 (AES finalist)."
+  },
+  {
+    num: 14, sec: "modern", topic: "Module 6 • AES (Rijndael) & Table 3.2 Cipher Comparison",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>Table 3.2: Symmetric Key Encryption Ciphers (Module 6 Slide)</span></div><table class="cipher-table"><thead><tr><th>Feature</th><th>RC4</th><th>DES</th><th>3DES</th><th>AES (Rijndael)</th></tr></thead><tbody><tr><td><strong>Key Length (bits)</strong></td><td>40 bits or more</td><td>56</td><td>112 or 168</td><td>128, 192, or 256</td></tr><tr><td><strong>Key Strength</strong></td><td>Very weak at 40b</td><td>Weak</td><td>Strong</td><td>Strong (Gold Standard)</td></tr><tr><td><strong>Processing / RAM</strong></td><td>Low / Low</td><td>Moderate / Moderate</td><td>High / Moderate</td><td>Low / Low</td></tr></tbody></table></div>`,
+    q: "Based on the Module 6 slides and Table 3.2 above, which statement about the Advanced Encryption Standard (AES / Rijndael) is TRUE?",
+    options: [
+      { k: "A", t: "AES was approved by NIST in 2000, encrypts 128-bit blocks using 128-, 192-, or 256-bit keys (substituting/rearranging bytes and performing special multiplication in each round), and has LOW processing and LOW RAM requirements." },
+      { k: "B", t: "AES encrypts 64-bit blocks and requires high CPU processing and high RAM." },
+      { k: "C", t: "AES is an asymmetric cipher based on prime number factoring." },
+      { k: "D", t: "AES uses a 56-bit key and was replaced by 3DES." }
+    ],
+    answer: "A",
+    explanation: "AES (based on the Rijndael cipher, approved by NIST in 2000) is today's gold standard symmetric block cipher. It processes 128-bit blocks with 128, 192, or 256-bit keys, and features both strong security and low processing/RAM overhead."
+  },
+  {
+    num: 15, sec: "modern", topic: "Module 6 • RSA Encryption & Decryption Step-by-Step Math",
+    visual: `<div class="cipher-box"><div class="cipher-header"><span>RSA Key Generation &amp; Modular Arithmetic Rules</span></div><div>1. Choose primes <strong>p</strong> and <strong>q</strong> &nbsp;&rarr;&nbsp; Compute modulus <strong>n = p &times; q</strong><br>2. Compute totient <strong>z = (p &minus; 1)(q &minus; 1)</strong><br>3. Choose public key <strong>e</strong> (coprime to z) &nbsp;&rarr;&nbsp; Find private key <strong>d</strong> such that <strong>(e &times; d) mod z = 1</strong><br>4. <strong>Encrypt:</strong> <span class="mono">c = m<sup>e</sup> mod n</span> &nbsp;|&nbsp; <strong>Decrypt:</strong> <span class="mono">m = c<sup>d</sup> mod n</span></div></div>`,
+    q: "Suppose we set up a small RSA cryptosystem using primes p = 3 and q = 11, and we choose public encryption exponent e = 7.<br>(1) What are the values of the modulus n, the totient z = (p−1)(q−1), and the private decryption key d?<br>(2) If we encrypt the plaintext message m = 2, what is the ciphertext c = m^e mod n?",
+    options: [
+      { k: "A", t: "(1) n = 33, z = 20, d = 3; (2) Ciphertext c = 2^7 mod 33 = 128 mod 33 = 29" },
+      { k: "B", t: "(1) n = 14, z = 33, d = 7; (2) Ciphertext c = 14" },
+      { k: "C", t: "(1) n = 33, z = 30, d = 5; (2) Ciphertext c = 2^7 mod 33 = 3" },
+      { k: "D", t: "(1) n = 33, z = 20, d = 3; (2) Ciphertext c = 2^3 mod 33 = 8" }
+    ],
+    answer: "A",
+    explanation: "(1) n = p × q = 3 × 11 = 33. Totient z = (3 − 1)(11 − 1) = 2 × 10 = 20. Private key d must satisfy (7 × d) mod 20 = 1; since 7 × 3 = 21 and 21 mod 20 = 1 (leftover of 1 when divided by 20), d = 3. (2) To encrypt m = 2: c = 2^7 mod 33 = 128 mod 33. Since 33 × 3 = 99, the remainder is 128 − 99 = 29!"
+  }
+];
+
+const appState = {
+  mode: 'practice',
+  studyMode: false,
+  currentFilter: 'all',
+  timerSeconds: 25 * 60,
+  timerDurationMin: 25,
+  timerRunning: false,
+  timerInterval: null,
+  examSubmitted: false,
+  answers: {}
+};
+
+function initQuizState() {
+  appState.examSubmitted = false;
+  appState.answers = {};
+  examBank.forEach(q => {
+    appState.answers[q.num] = { answered: false, correct: false, selected: null };
+  });
+}
+
+initQuizState();
+
+function setMode(newMode) {
+  if (appState.mode === newMode) return;
+  appState.mode = newMode;
+  appState.studyMode = false;
+  updateStudyModeButton();
+
+  const pBtn = document.getElementById('mode-practice-btn');
+  const eBtn = document.getElementById('mode-exam-btn');
+  const timerBox = document.getElementById('timer-box');
+  const submitBtn = document.getElementById('submit-exam-btn');
+  const studyBtn = document.getElementById('study-mode-btn');
+
+  if (newMode === 'exam') {
+    pBtn.classList.remove('active');
+    eBtn.classList.add('active', 'exam-active');
+    timerBox.classList.add('show');
+    submitBtn.classList.add('show');
+    studyBtn.style.display = 'none';
+    initQuizState();
+    resetTimer(appState.timerDurationMin);
+    startTimer();
+  } else {
+    eBtn.classList.remove('active', 'exam-active');
+    pBtn.classList.add('active');
+    timerBox.classList.remove('show');
+    submitBtn.classList.remove('show');
+    studyBtn.style.display = 'inline-flex';
+    stopTimer();
+  }
+
+  renderQuiz();
+}
+
+function startTimer() {
+  if (appState.timerInterval) clearInterval(appState.timerInterval);
+  appState.timerRunning = true;
+  document.getElementById('timer-toggle-btn').textContent = 'Pause';
+  appState.timerInterval = setInterval(() => {
+    if (appState.timerSeconds > 0) {
+      appState.timerSeconds--;
+      updateTimerDisplay();
+    } else {
+      stopTimer();
+      if (appState.mode === 'exam' && !appState.examSubmitted) {
+        submitExam();
+      }
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (appState.timerInterval) clearInterval(appState.timerInterval);
+  appState.timerInterval = null;
+  appState.timerRunning = false;
+  const btn = document.getElementById('timer-toggle-btn');
+  if (btn) btn.textContent = 'Resume';
+}
+
+function toggleTimer() {
+  if (appState.timerRunning) {
+    stopTimer();
+  } else {
+    startTimer();
+  }
+}
+
+function changeTimerDuration(mins) {
+  appState.timerDurationMin = parseInt(mins, 10);
+  resetTimer(appState.timerDurationMin);
+  if (appState.mode === 'exam' && !appState.examSubmitted) {
+    startTimer();
+  }
+}
+
+function resetTimer(mins) {
+  stopTimer();
+  appState.timerSeconds = mins * 60;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(appState.timerSeconds / 60);
+  const s = appState.timerSeconds % 60;
+  const el = document.getElementById('timer-display');
+  if (el) {
+    el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  const banner = document.getElementById('exam-results-banner');
+  container.innerHTML = '';
+
+  if (appState.mode === 'exam' && appState.examSubmitted) {
+    renderExamResultsBanner();
+  } else {
+    banner.className = 'exam-results-banner';
+    banner.innerHTML = '';
+  }
+
+  sectionMeta.forEach(sec => {
+    const secQs = examBank.filter(q => q.sec === sec.id);
+    const secBlock = document.createElement('div');
+    secBlock.className = 'section-block';
+    secBlock.id = `block-${sec.id}`;
+    secBlock.dataset.section = sec.id;
+
+    if (appState.currentFilter !== 'all' && appState.currentFilter !== sec.id) {
+      secBlock.style.display = 'none';
+    }
+
+    let secHTML = `
+      <div class="section-title-bar">
+        <h2>${sec.title}</h2>
+        <p>${sec.desc}</p>
+      </div>
+    `;
+
+    secQs.forEach(q => {
+      const qAns = appState.answers[q.num];
+      const formattedQ = q.q.replace(/\n/g, '<br>');
+
+      secHTML += `
+        <div class="question-card" id="q-card-${q.num}">
+          <div class="q-topic-tag">${q.topic}</div>
+          <div class="question-header">
+            <span class="q-badge">Q${q.num}</span>
+            <span>${formattedQ}</span>
+          </div>
+          ${q.visual ? q.visual : ''}
+          <div class="options-list">
+            ${q.options.map(opt => {
+              let btnClass = 'option-btn';
+              if (qAns.answered) {
+                if (appState.mode === 'exam' && !appState.examSubmitted) {
+                  if (qAns.selected === opt.k) btnClass += ' selected-exam';
+                } else {
+                  if (opt.k === q.answer && (qAns.correct || appState.examSubmitted || appState.studyMode)) {
+                    btnClass += ' correct';
+                  } else if (qAns.selected === opt.k && !qAns.correct) {
+                    btnClass += ' incorrect';
+                  }
+                }
+              }
+              return `
+                <button type="button" class="${btnClass}" id="opt-${q.num}-${opt.k}" onclick="handleSelect(${q.num}, '${opt.k}')">
+                  <span class="opt-key">${opt.k}</span>
+                  <span>${opt.t}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+          <div class="feedback-box ${getFeedbackClass(q, qAns)}" id="fb-${q.num}">
+            ${getFeedbackHTML(q, qAns)}
+          </div>
+        </div>
+      `;
+    });
+
+    secBlock.innerHTML = secHTML;
+    container.appendChild(secBlock);
+  });
+
+  updateDashboard();
+}
+
+function getFeedbackClass(q, qAns) {
+  if (appState.mode === 'exam' && !appState.examSubmitted) return '';
+  if (!qAns.answered && !appState.examSubmitted) return '';
+  if (qAns.correct) return 'show correct-msg';
+  return 'show incorrect-msg';
+}
+
+function getFeedbackHTML(q, qAns) {
+  if (appState.mode === 'exam' && !appState.examSubmitted) return '';
+  if (!qAns.answered && !appState.examSubmitted) return '';
+
+  if (qAns.correct) {
+    return `
+      <div class="feedback-header">&#x2714; Correct! (Answer: ${q.answer})</div>
+      <div>${q.explanation}</div>
+    `;
+  } else {
+    if (appState.examSubmitted) {
+      const userSel = qAns.selected ? `You selected <strong>${qAns.selected}</strong>.` : `<strong>Unanswered.</strong>`;
+      return `
+        <div class="feedback-header">&#x2718; Incorrect. ${userSel} Correct Answer: ${q.answer}</div>
+        <div>${q.explanation}</div>
+      `;
+    } else {
+      return `
+        <div class="feedback-header">&#x2718; Not quite!</div>
+        <div>You selected <strong>${qAns.selected}</strong>. Check the cipher rules or tap another option to try again!</div>
+      `;
+    }
+  }
+}
+
+function handleSelect(qNum, selectedKey) {
+  const q = examBank.find(item => item.num === qNum);
+  if (!q) return;
+
+  if (appState.mode === 'exam' && appState.examSubmitted) return;
+
+  const isCorrect = (selectedKey === q.answer);
+  appState.answers[qNum] = {
+    answered: true,
+    correct: isCorrect,
+    selected: selectedKey
+  };
+
+  if (appState.mode === 'exam') {
+    q.options.forEach(opt => {
+      const btn = document.getElementById(`opt-${qNum}-${opt.k}`);
+      if (btn) btn.classList.toggle('selected-exam', opt.k === selectedKey);
+    });
+  } else {
+    q.options.forEach(opt => {
+      const btn = document.getElementById(`opt-${qNum}-${opt.k}`);
+      if (btn) btn.classList.remove('correct', 'incorrect', 'selected-exam');
+    });
+
+    const chosenBtn = document.getElementById(`opt-${qNum}-${selectedKey}`);
+    const fb = document.getElementById(`fb-${qNum}`);
+
+    if (isCorrect) {
+      chosenBtn.classList.add('correct');
+      fb.className = 'feedback-box show correct-msg';
+      fb.innerHTML = `
+        <div class="feedback-header">&#x2714; Correct! (Answer: ${q.answer})</div>
+        <div>${q.explanation}</div>
+      `;
+    } else {
+      chosenBtn.classList.add('incorrect');
+      fb.className = 'feedback-box show incorrect-msg';
+      fb.innerHTML = `
+        <div class="feedback-header">&#x2718; Not quite!</div>
+        <div>You selected <strong>${selectedKey}</strong>. Check the cipher rules or tap another option to try again!</div>
+      `;
+    }
+  }
+
+  updateDashboard();
+}
+
+function submitExam() {
+  appState.examSubmitted = true;
+  stopTimer();
+  document.getElementById('submit-exam-btn').classList.remove('show');
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderExamResultsBanner() {
+  const banner = document.getElementById('exam-results-banner');
+  let totalCorrect = 0;
+  for (let i = 1; i <= 15; i++) {
+    if (appState.answers[i].correct) totalCorrect++;
+  }
+  const pct = Math.round((totalCorrect / 15) * 100);
+
+  let secCardsHTML = '';
+  sectionMeta.forEach(sec => {
+    const secQs = examBank.filter(q => q.sec === sec.id);
+    let secCorrect = 0;
+    secQs.forEach(q => {
+      if (appState.answers[q.num].correct) secCorrect++;
+    });
+    const secPct = Math.round((secCorrect / secQs.length) * 100);
+    secCardsHTML += `
+      <div class="topic-stat-card">
+        <strong>${sec.title.split('(')[0].trim()}</strong>
+        <span>${secCorrect} / ${secQs.length} (${secPct}%)</span>
+      </div>
+    `;
+  });
+
+  banner.className = 'exam-results-banner show';
+  banner.innerHTML = `
+    <div class="exam-results-header">
+      <div>
+        <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--gray-600);">Specialized Ciphers Quiz Result</div>
+        <div class="exam-grade-big">Final Score: ${totalCorrect} / 15 (${pct}%)</div>
+      </div>
+      <div>
+        <button type="button" class="btn-action" onclick="resetExam()">&#x21bb; Retake Quiz</button>
+      </div>
+    </div>
+    <div class="topic-breakdown-grid">
+      ${secCardsHTML}
+    </div>
+  `;
+}
+
+function updateDashboard() {
+  let answered = 0;
+  let correct = 0;
+  const total = 15;
+
+  for (let i = 1; i <= total; i++) {
+    if (appState.answers[i].answered) answered++;
+    if (appState.answers[i].correct) correct++;
+  }
+
+  const pct = Math.round((correct / total) * 100);
+
+  if (appState.mode === 'exam' && !appState.examSubmitted) {
+    document.getElementById('score-display').textContent = `Hidden`;
+    document.getElementById('percent-display').textContent = `Quiz in Progress`;
+  } else {
+    document.getElementById('score-display').textContent = `${correct} / ${total}`;
+    document.getElementById('percent-display').textContent = `${pct}%`;
+  }
+
+  document.getElementById('answered-display').textContent = `${answered} / ${total}`;
+  document.getElementById('progress-fill').style.width = `${Math.round((answered / total) * 100)}%`;
+}
+
+function filterSection(secId, tabEl) {
+  appState.currentFilter = secId;
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+
+  const blocks = document.querySelectorAll('.section-block');
+  blocks.forEach(block => {
+    if (secId === 'all' || block.dataset.section === secId) {
+      block.style.display = 'block';
+    } else {
+      block.style.display = 'none';
+    }
+  });
+}
+
+function resetExam() {
+  initQuizState();
+  appState.studyMode = false;
+  updateStudyModeButton();
+
+  if (appState.mode === 'exam') {
+    document.getElementById('submit-exam-btn').classList.add('show');
+    resetTimer(appState.timerDurationMin);
+    startTimer();
+  }
+
+  renderQuiz();
+}
+
+function updateStudyModeButton() {
+  const btn = document.getElementById('study-mode-btn');
+  if (!btn) return;
+  if (appState.studyMode) {
+    btn.innerHTML = '&#x274C; Exit Study Mode';
+    btn.style.background = 'var(--primary)';
+    btn.style.color = 'white';
+  } else {
+    btn.innerHTML = '&#x1F4D6; Study Mode';
+    btn.style.background = 'white';
+    btn.style.color = 'var(--gray-700)';
+  }
+}
+
+function toggleStudyMode() {
+  if (appState.mode === 'exam') return;
+  appState.studyMode = !appState.studyMode;
+  updateStudyModeButton();
+
+  if (appState.studyMode) {
+    examBank.forEach(q => {
+      appState.answers[q.num] = { answered: true, correct: true, selected: q.answer };
+    });
+    renderQuiz();
+  } else {
+    resetExam();
+  }
+}
+
+function toggleCheatSheet(show) {
+  const modal = document.getElementById('cheatsheet-modal');
+  if (modal) modal.classList.toggle('show', show);
+}
+
+window.onload = () => {
+  renderQuiz();
+};
+</script>
+</body>
+</html>
